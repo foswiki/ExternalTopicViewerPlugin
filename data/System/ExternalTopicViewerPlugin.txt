@@ -8,8 +8,50 @@ One line description, required for extensions repository catalog.
 %TOC%
 
 ---++ Usage
-
+---+++ General usage
+   * Syntax: =%<nop>EXTERNALTOPICS{...}%=
+   * Synopsis: Lists all files in a configurable folder on the file system (any folder) and presents them in a TWiki table for opening (viewing).
+   * Supported parameters:
+| *Parameter:* | *Description:* | *Default:* |
+| =fullpath="..."= | MANDATORY: Path to external topic (text) files stored on the file system. %BR% e.g. =fullpath="c:\ProxyReports"= (Win) =fullpath="/var/logs"= (Unix) | |
+| =filenameheader="..."= | MANDATORY: Determines the free configurable header, based on the file name bits, for the resultant overview table: %BR%\
+For example, you may generate daily text files, ie. log files, conf files or text reports etc with a specifc file name format, which \
+you want to access from TWiki: %BR%\
+=2009-08-01_o_10-25-29_o_Computer1_o_DailyBackup.txt= %BR%\
+=2009-08-02_o_10-25-00_o_Computer1_o_DailyBackup.txt= %BR%\
+=2009-08-02_o_10-25-03_o_Computer2_o_DailyBackup.txt= %BR%\
+=2009-08-03_o_10-25-31_o_Computer1_o_DailyBackup.txt= %BR%\
+*Note!* =_o_= being the separator %BR%\
+In order to reflect the above file name fields in the resultant table, \
+write the following =filenameheader= %BR% =filenameheader="Date,Time,Host name,Type"= %BR%\
+You will get an overview table as shown at *Example Overview Example* below %BR% %BR%\
+*Note!* If you want to present the full file name only in one table column, specify =filename="Filename"= and make sure \
+=filenamesep="..."= does not match, otherwise the resultant table won't show correctly!\
+ | |
+| =filenamesep="..."= | OPTIONAL: To set, for instance, a single underscore as separator sign, set this parameter to =filenamesep="_"=  | =_o_= |
+| =contentmode="..."= | OPTIONAL: The plugin expects external files to be TML formatted, if you do not want text interpretation set this parameter to =contentmode="verbatim"= | Standard TWiki content parsing |
+| =filesearchpattern="..."= | OPTIONAL: Set this parameter to =filesearchpattern="[Bb]ackup"= to get only files that match the specified search pattern. %BR%\
+*Note!* Neither negated search patterns e.g. =! /my regex pattern/= nor file test operators =-e= are supported. | =\.txt$= (All files ending in .txt) |
+| =hidecols="..."= | OPTIONAL: set this parameter, for instance, to =hidecols="Type,Time"= (coma-separated header list) to hide these columns from the overview table. %BR% \
+*Note!* Only header names specified at =filenameheader= are supported (case-sensitive!). Order is irrelevant! | All columns |
+---+++ Enable 'Allow file deletion' mode
+<blockquote>
+%ICON{"warning"}% *NOTE!* Use *Allow file deletion* mode with caution, as it may cause serious problems with your %ICON{"twiki"}% *TWiki* installation
+</blockquote>
+   * Parameter: Manually add %BR% =$TWiki::cfg{Plugins}{ExternalTopicViewerPlugin}{AllowFileDeletionPath} = "D:\\mypath, D:\\anotherpath\\";= %BR% \
+or %BR% =$TWiki::cfg{Plugins}{ExternalTopicViewerPlugin}{AllowFileDeletionPath} = "D:/mypath, D:/anotherpath/";= %BR% \
+__but never!__ %BR% =$TWiki::cfg{Plugins}{ExternalTopicViewerPlugin}{AllowFileDeletionPath} = "D:\mypath, D:\anotherpath\";= %BR% \
+to your =LocalSite.cfg= %BR%\
+%ICON{"info"}% *NOTE!* Files can only be deleted from directories specified in ={AllowFileDeletionPath}=
+   * Synopsis: If being set, another column (Select) with check-boxes will be presented in the resultant overview table along with a __delete button__. %BR% \
+%ICON{"info"}% *NOTE!* The path specified in =%<nop>EXTERNALTOPICS{ fullpath='"D:\mypath" }%= must match with at least one path specified in =LocalSite.cfg=
 ---++ Examples
+---+++ Example Overview Table
+| *Date* | *Time* | *Host name* | *Type* | *Open file* |
+| 2009-08-01 | 10-25-29 | Computer1 | <nop>DailyBackup.txt | [[%TOPIC%][Open]] |
+| 2009-08-02 | 10-25-00 | Computer1 | <nop>DailyBackup.txt | [[%TOPIC%][Open]] |
+| 2009-08-02 | 10-25-03 | Computer2 | <nop>DailyBackup.txt | [[%TOPIC%][Open]] |
+| 2009-08-03 | 10-25-31 | Computer1 | <nop>DailyBackup.txt | [[%TOPIC%][Open]] |
 
 ---++ Installation Instructions
 
@@ -20,8 +62,8 @@ One line description, required for extensions repository catalog.
 Many thanks to the following sponsors for supporting this work:
    * Acknowledge any sponsors here
 
-|  Author(s): | |
-|  Copyright: | &copy; |
+|  Author(s): | Main.PatrickDalinghoff |
+|  Copyright: | &copy; Main.PatrickDalinghoff 2009 |
 |  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
